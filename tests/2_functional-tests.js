@@ -168,6 +168,19 @@ suite('Functional Tests', () => {
         });
     });
     
+    test('Check a puzzle placement with incorrect length', (done) => {
+      chai
+        .request(server)
+        .post('/api/check')
+        .send({ puzzle: invalidLengthPuzzle, coordinate: 'A1', value: '2'})
+        .end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.property(res.body, 'error');
+          assert.equal(res.body.error, 'Expected puzzle to be 81 characters long');
+          done();
+        });
+    });
+    
     test('Check a puzzle placement with invalid placement coordinate', (done) => {
       chai
         .request(server)
@@ -193,10 +206,5 @@ suite('Functional Tests', () => {
           done();
         });
     });
-
   });
-
-
-
 });
-
